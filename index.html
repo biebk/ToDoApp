@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoersToDo</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="top-info"><span id="month"></span><span id="dayDate"></span><span id="year"></span><button
+                id="todoBtn" onclick="toggleToDo()">Create ToDo</button>
+            <div id="dayName"></div>
+            <div id="initialList">
+                <p>Enter your task !</p>
+                <input type="text" placeholder="Enter here ..." maxlength="100" id="inputBox">
+                <input type="submit" value="Add" onclick="listGenerator()">
+                <ol id="listBox">
+
+
+                </ol>
+                <div class="lowerPart">
+                    <button id="submitBtn" onclick="submitter()">Submit</button>
+                    <button id="closeBtn" onclick="closer()">Close</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="lowerpart">
+            <div class="quoteBox">
+                <div id="quoteWrapper">
+                    <p id="quoteText"></p>
+                    <p id="authorName">&mdash;&nbsp;</p>
+                </div>
+            </div>
+            <div class="ongoingTask">
+                <h3><i class="far fa-times-circle"></i>On Going Tasks</h3>
+                <ol id="ongoingTaskList">
+                    
+                </ol>
+                <ol id="resultBox">
+                    <!-- <span id="listInfo">October 1</span> -->
+                    <!-- <li><label>Jordan Peterson <input type="checkbox"></label></li>
+                    <li><label>Simon Sinek <input type="checkbox"></label></li> -->
+                    <div class="lowerPart">
+                        <button id="submitButton" onclick="">Submit</button>
+                        <button id="closeButton" onclick="closeResult()">Close</button>
+                    </div>
+                </ol>
+            </div>
+            <div class="completedTask">
+                <h3><i class="far fa-check-circle"></i>Completed Tasks</h3>
+            </div>
+        </div>
+    </div>
+     
+    <script src="script.js"></script>       
+</body>
+
+</html>
