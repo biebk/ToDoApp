@@ -150,26 +150,26 @@ var submitter = () => {
             const tempArray = JSON.parse(window.localStorage.getItem(monthArray[month] + day));
             const temp = tempArray.concat(...currentDay);
             window.localStorage.setItem((monthArray[month] + day), JSON.stringify(temp));
-            
+
         }
         else {
             console.log("no you didn't made it");
             window.localStorage.setItem((monthArray[month] + day), JSON.stringify(currentDay));
-           onGoingTask = JSON.parse(window.localStorage.getItem('onGoingTask'));
-            if(onGoingTask===null){
-                window.localStorage.setItem('onGoingTask',JSON.stringify([]));
+            onGoingTask = JSON.parse(window.localStorage.getItem('onGoingTask'));
+            if (onGoingTask === null) {
+                window.localStorage.setItem('onGoingTask', JSON.stringify([]));
 
                 onGoingTask = JSON.parse(window.localStorage.getItem('onGoingTask'));
 
             }
-           console.log(onGoingTask); 
-           onGoingTask.unshift((monthArray[month] + day));
+            console.log(onGoingTask);
+            onGoingTask.unshift((monthArray[month] + day));
             console.log(onGoingTask);
             window.localStorage.setItem("onGoingTask", JSON.stringify(onGoingTask));
         }
-       
+
         document.location.reload();
-      
+
 
         closer();
     }
@@ -181,34 +181,34 @@ var submitter = () => {
 const onGoing = JSON.parse(window.localStorage.getItem("onGoingTask"));
 console.log(onGoing);
 
- var completed = JSON.parse(window.localStorage.getItem("completedTask"));
-    if(completed===null){
-        window.localStorage.setItem('completedTask',JSON.stringify([]));
-        completed = JSON.parse(window.localStorage.getItem("completedTask"));
-    }   
- console.log(completed);
- // console.log('onGoing');
+var completed = JSON.parse(window.localStorage.getItem("completedTask"));
+if (completed === null) {
+    window.localStorage.setItem('completedTask', JSON.stringify([]));
+    completed = JSON.parse(window.localStorage.getItem("completedTask"));
+}
+console.log(completed);
+// console.log('onGoing');
 
 // completed.push(...JSON.parse(window.localStorage.getItem("completedTask")));
 
 // var completedTaskList = document.getElementById("completedTaskList");
 
-var fetchCompletedTask = ()=>{
-    for(let key of completed){
+var fetchCompletedTask = () => {
+    for (let key of completed) {
         console.log("i was there");
         completedTaskCreator(key);
-        
+
 
     }
 };
-function completedTaskCreator(key){
+function completedTaskCreator(key) {
 
     let li = document.createElement("li");
     let liText = document.createTextNode(key);
     li.appendChild(liText);
-   completedTaskList.appendChild(li);
-  
-   
+    completedTaskList.appendChild(li);
+
+
 }
 
 
@@ -235,7 +235,11 @@ var submitButton = document.getElementById("submitButton");
 var globalCheckboxCount = 0;
 var globalCheckboxLength = 0;
 var addEventOnLi = () => {
+
     const liArray = document.querySelectorAll(".ongoingTask #ongoingTaskList >li");
+    if (liArray.length > 4) {
+        document.getElementById("ongoingTaskList").style.overflowY = 'scroll';
+    }
     liArray.forEach(item => {
         item.addEventListener('click', showResultBox);
     });
@@ -260,63 +264,77 @@ function showResultBox() {
         resultBox.append(li);
     }
 
-//need to create a function that will show the completed task list on clicking list item in completed task section
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //making the submit button disabled until all the checkboxes are checked
     submitButton.disabled = true;
-    submitButton.style.cssText="opacity: 0.4";
+    submitButton.style.cssText = "opacity: 0.4";
     var checkboxes = document.querySelectorAll("input[type='checkbox']");
-console.log(checkboxes);
-globalCheckboxLength = checkboxes.length;
-console.log(globalCheckboxLength);
-listTitle = liName;
-console.log(listTitle);
+    console.log(checkboxes);
+    globalCheckboxLength = checkboxes.length;
+    console.log(globalCheckboxLength);
+    listTitle = liName;
+    console.log(listTitle);
 
 }
 
-
-function countCheckbox(checkbox){
-
-if(checkbox.checked===true){
-    globalCheckboxCount++;
-
-    checkboxesChecked();
-}
-else{
-    globalCheckboxCount--;
-    checkboxesChecked();
-}
-}
-function checkboxesChecked(){
-    
-    if(globalCheckboxCount===globalCheckboxLength){
-    //   submitButton.setAttribute('disabled','false');
-      submitButton.disabled = false;
-      submitButton.style.cssText="opacity: 1";
+//need to create a function that will show the completed task list on clicking list item in completed task section
+var addEventOnCompletedLi = () => {
+    console.log("i am here");
+    let liArray = document.querySelectorAll("#completedTaskList > li");
+    console.log(liArray);
+    if (liArray.length > 4) {
+        document.getElementById("completedTaskList").style.overflowY = 'scroll';
     }
-    else{
+    liArray.forEach(item => {
+
+
+        item.addEventListener('click', showCompletedResultBox);
+    });
+};
+addEventOnCompletedLi();
+
+function showCompletedResultBox() {
+    completedResultBox.style.display = "block";
+    let liName = this.textContent;
+    var arr = JSON.parse(window.localStorage.getItem(liName));
+    if (arr.length > 12) {
+        completedResultBox.style.overflowY = "scroll";
+    }
+    let spanElement = document.createElement("span");
+    spanElement.setAttribute("id", "listInfoCompleted");
+    let spanText = document.createTextNode(liName);
+    spanElement.appendChild(spanText);
+    completedResultBox.append(spanElement);
+    for (let item of arr) {
+        let li = document.createElement("li");
+        li.innerHTML = item;
+        completedResultBox.append(li);
+    }
+}
+
+function countCheckbox(checkbox) {
+
+    if (checkbox.checked === true) {
+        globalCheckboxCount++;
+
+        checkboxesChecked();
+    }
+    else {
+        globalCheckboxCount--;
+        checkboxesChecked();
+    }
+}
+function checkboxesChecked() {
+
+    if (globalCheckboxCount === globalCheckboxLength) {
+        //   submitButton.setAttribute('disabled','false');
+        submitButton.disabled = false;
+        submitButton.style.cssText = "opacity: 1";
+    }
+    else {
 
         // submitButton.setAttribute('disabled','true');
         submitButton.disabled = true;
-        submitButton.style.cssText="opacity: 0.4";
+        submitButton.style.cssText = "opacity: 0.4";
 
     }
 }
@@ -324,22 +342,22 @@ function checkboxesChecked(){
 //add the name to completed array
 var listTitle = '';
 
-const taskCompleted = ()=>{
+const taskCompleted = () => {
     // console.log(storage);
     let ongoingArray = JSON.parse(storage.onGoingTask);
-    
+
     let index = ongoingArray.indexOf(listTitle);
-     let removedItem = ongoingArray.splice(index,1);
-     window.localStorage.setItem('onGoingTask',JSON.stringify(ongoingArray));
+    let removedItem = ongoingArray.splice(index, 1);
+    window.localStorage.setItem('onGoingTask', JSON.stringify(ongoingArray));
     completedTask = JSON.parse(window.localStorage.getItem("completedTask"));
     completedTask.unshift(...removedItem);
 
     //2 first fetch the completed and  then unshift 
     //update the ongoing by deleting the completed task 
-    window.localStorage.setItem("completedTask",JSON.stringify(completedTask));
-     window.location.reload();
-     closer();
-    };
+    window.localStorage.setItem("completedTask", JSON.stringify(completedTask));
+    window.location.reload();
+    closer();
+};
 
 
 //function to close the resultBox that we get when we click any item of ongoing task section
@@ -347,13 +365,19 @@ var closeResult = () => {
     window.location.reload();
     document.getElementById('resultBox').style.display = 'none';
 }
-var closeCompletedResultBox =()=>{
+var closeCompletedResultBox = () => {
     document.getElementById("completedResultBox").style.display = 'none';
-    
+    window.location.reload();
 };
 
-var completedTaskDeleter = ()=> {
-    
+var completedTaskDeleter = () => {
+    let listName = document.getElementById("listInfoCompleted").innerText;
+    let completedArray = JSON.parse(window.localStorage.getItem("completedTask"));
+    let index = completedArray.indexOf(listName);
+    completedArray.splice(index, 1);
+    window.localStorage.setItem('completedTask', JSON.stringify(completedArray));
+    window.localStorage.removeItem(listName);
+    closeCompletedResultBox();
 };
 
 
