@@ -378,3 +378,13 @@ body {
     margin-left: 6px;
     cursor: pointer;
 }
+
+/* Code for responsiveness */
+@media screen and (max-width: 540px) {
+    body {
+        background: red;
+    }
+    .container {
+        width: 350px;
+    }
+}
