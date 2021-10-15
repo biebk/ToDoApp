@@ -381,10 +381,21 @@ body {
 
 /* Code for responsiveness */
 @media screen and (max-width: 540px) {
-    body {
-        background: red;
-    }
     .container {
         width: 350px;
+    }
+   
+    #initialList input[type="text"] {
+      
+        display: block;
+        width: 100%;
+    }
+    #initialList input[type="submit"] {
+        display: block;
+        margin: auto;
+        margin-top: 10px;
+    }
+    .top-info,.top-info>span {
+        font-family: Arial, Helvetica, sans-serif;
     }
 }
