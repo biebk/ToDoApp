@@ -63,6 +63,8 @@ const quotesAuthor = [
     "Benjamin Franklin",
     "Jordan B. Peterson"
 ];
+
+//function that should be 
 // Generating Random Number and making that as array index to display quote and author name
 var quoteText = document.getElementById("quoteText");
 var authorName = document.getElementById("authorName");
@@ -126,10 +128,14 @@ function listGenerator() {
         input.setAttribute("placeholder", "Success! Enter next task ..");
     }
 }
+//creating onGoingTask and completedTask array and storing them to local storage;
+var onGoingTask = [];
+// window.localStorage.setItem('onGoingTask',JSON.stringify(onGoingTask));
+var completedTask = [];
 
 //save array while clicking on submit button to window local storage
 var storage = window.localStorage;
-console.log(storage);
+
 var ongoingTaskList = document.getElementById("ongoingTaskList");
 
 var submitter = () => {
@@ -139,96 +145,229 @@ var submitter = () => {
 
     }
     else {
-        if(storage[monthArray[month]+day]!=undefined){
-           console.log("i was there");
-            const tempArray = JSON.parse(window.localStorage.getItem(monthArray[month]+day));
-            const temp=tempArray.concat(...currentDay);
-            window.localStorage.setItem((monthArray[month]+day),JSON.stringify(temp));
+        if (storage[monthArray[month] + day] != undefined) {
+            console.log("i was there");
+            const tempArray = JSON.parse(window.localStorage.getItem(monthArray[month] + day));
+            const temp = tempArray.concat(...currentDay);
+            window.localStorage.setItem((monthArray[month] + day), JSON.stringify(temp));
+            
         }
-        else{
+        else {
             console.log("no you didn't made it");
-            window.localStorage.setItem((monthArray[month]+day),JSON.stringify(currentDay));
+            window.localStorage.setItem((monthArray[month] + day), JSON.stringify(currentDay));
+           onGoingTask = JSON.parse(window.localStorage.getItem('onGoingTask'));
+            if(onGoingTask===null){
+                window.localStorage.setItem('onGoingTask',JSON.stringify([]));
+
+                onGoingTask = JSON.parse(window.localStorage.getItem('onGoingTask'));
+
+            }
+           console.log(onGoingTask); 
+           onGoingTask.unshift((monthArray[month] + day));
+            console.log(onGoingTask);
+            window.localStorage.setItem("onGoingTask", JSON.stringify(onGoingTask));
         }
        
         document.location.reload();
+      
+
         closer();
     }
 };
 
-//create a function that will display all the array
-//of local storage in on Going task
-const storageArrays = [];
+// //creating a function that will fetch all the ongoing task from local storage which are save under
+// //key named onGoingTask and displaying them in ongoing section
+// //getting onGoingTask Array from local storage
+const onGoing = JSON.parse(window.localStorage.getItem("onGoingTask"));
+console.log(onGoing);
 
-var fetchStorageArrays = ()=>{
+ var completed = JSON.parse(window.localStorage.getItem("completedTask"));
+    if(completed===null){
+        window.localStorage.setItem('completedTask',JSON.stringify([]));
+        completed = JSON.parse(window.localStorage.getItem("completedTask"));
+    }   
+ console.log(completed);
+ // console.log('onGoing');
 
-for(let key in storage){
-if(key!=='length'&&key!=="clear"&&key!=="getItem"&&key!=="setItem"&&key!=="key"&&key!=="removeItem"){
-    storageArrays.push(key);
-}   
-}
-for(let key of storageArrays){
-taskCreator(key);
-}
+// completed.push(...JSON.parse(window.localStorage.getItem("completedTask")));
+
+// var completedTaskList = document.getElementById("completedTaskList");
+
+var fetchCompletedTask = ()=>{
+    for(let key of completed){
+        console.log("i was there");
+        completedTaskCreator(key);
+        
+
+    }
 };
-fetchStorageArrays();
+function completedTaskCreator(key){
 
-//Function to create li inside ongoing task
-function taskCreator(key){
-let li = document.createElement("li");
-let liText=document.createTextNode(key);
-li.appendChild(liText);
-ongoingTaskList.appendChild(li);
+    let li = document.createElement("li");
+    let liText = document.createTextNode(key);
+    li.appendChild(liText);
+   completedTaskList.appendChild(li);
+  
+   
 }
 
-//Now its time to create a function that will add event to all list item in ongoing task when the app is loaded
-//then on clicking that we should get access to that particular li and it's inner text
 
-var addEventOnLi = ()=>{
-const liArray = document.querySelectorAll(".ongoingTask #ongoingTaskList >li");
-liArray.forEach(item=>{
-item.addEventListener('click',showResultBox);
-});
+var fetchOnGoingTask = () => {
+
+    for (let key of onGoing) {
+        onGoingtaskCreator(key);
+    }
+};
+fetchOnGoingTask();
+fetchCompletedTask();
+
+// //Function to create li inside ongoing task
+function onGoingtaskCreator(key) {
+    let li = document.createElement("li");
+    let liText = document.createTextNode(key);
+    li.appendChild(liText);
+    ongoingTaskList.appendChild(li);
+}
+
+// //Now its time to create a function that will add event to all list item in ongoing task when the app is loaded
+// //then on clicking that we should get access to that particular li and it's inner text
+var submitButton = document.getElementById("submitButton");
+var globalCheckboxCount = 0;
+var globalCheckboxLength = 0;
+var addEventOnLi = () => {
+    const liArray = document.querySelectorAll(".ongoingTask #ongoingTaskList >li");
+    liArray.forEach(item => {
+        item.addEventListener('click', showResultBox);
+    });
 };
 addEventOnLi();
 var resultBox = document.querySelector("#resultBox");
-function showResultBox(){
-resultBox.style.display="block";
-let liName=event.target.textContent;
-var arr = JSON.parse(window.localStorage.getItem(liName));
-let spanElement = document.createElement("span");
-spanElement.setAttribute("id","listInfo");
-let spanText = document.createTextNode(liName);
-spanElement.appendChild(spanText);
-resultBox.append(spanElement);
-for(let item of arr){
-let li = document.createElement("li");
-li.innerHTML ="<label>"+item+"<input type='checkbox'></label>"
-resultBox.append(li);
+function showResultBox() {
+    resultBox.style.display = "block";
+    let liName = this.textContent;
+    var arr = JSON.parse(window.localStorage.getItem(liName));
+    if (arr.length > 12) {
+        resultBox.style.overflowY = "scroll";
+    }
+    let spanElement = document.createElement("span");
+    spanElement.setAttribute("id", "listInfo");
+    let spanText = document.createTextNode(liName);
+    spanElement.appendChild(spanText);
+    resultBox.append(spanElement);
+    for (let item of arr) {
+        let li = document.createElement("li");
+        li.innerHTML = "<label>" + item + "<input type='checkbox' onclick='countCheckbox(this)'></label>"
+        resultBox.append(li);
+    }
+    //making the submit button disabled until all the checkboxes are checked
+    submitButton.disabled = true;
+    submitButton.style.cssText="opacity: 0.4";
+    var checkboxes = document.querySelectorAll("input[type='checkbox']");
+console.log(checkboxes);
+globalCheckboxLength = checkboxes.length;
+console.log(globalCheckboxLength);
+listTitle = liName;
+console.log(listTitle);
+
+}
+
+
+function countCheckbox(checkbox){
+
+if(checkbox.checked===true){
+    globalCheckboxCount++;
+
+    checkboxesChecked();
+}
+else{
+    globalCheckboxCount--;
+    checkboxesChecked();
 }
 }
+function checkboxesChecked(){
+    
+    if(globalCheckboxCount===globalCheckboxLength){
+    //   submitButton.setAttribute('disabled','false');
+      submitButton.disabled = false;
+      submitButton.style.cssText="opacity: 1";
+    }
+    else{
+
+        // submitButton.setAttribute('disabled','true');
+        submitButton.disabled = true;
+        submitButton.style.cssText="opacity: 0.4";
+
+    }
+}
+//Now its time to create a function that will delete the name from ongoing task in local storage and
+//add the name to completed array
+var listTitle = '';
+
+const taskCompleted = ()=>{
+    // console.log(storage);
+    let ongoingArray = JSON.parse(storage.onGoingTask);
+    
+    let index = ongoingArray.indexOf(listTitle);
+     let removedItem = ongoingArray.splice(index,1);
+     window.localStorage.setItem('onGoingTask',JSON.stringify(ongoingArray));
+    completedTask = JSON.parse(window.localStorage.getItem("completedTask"));
+    completedTask.unshift(...removedItem);
+
+    //2 first fetch the completed and  then unshift 
+    //update the ongoing by deleting the completed task 
+    window.localStorage.setItem("completedTask",JSON.stringify(completedTask));
+     window.location.reload();
+     closer();
+    };
 
 
 //function to close the resultBox that we get when we click any item of ongoing task section
-var closeResult = ()=>{
+var closeResult = () => {
     window.location.reload();
-    document.getElementById('resultBox').style.display='none';
+    document.getElementById('resultBox').style.display = 'none';
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* What is next?
 The idea now is while user checks the list items on ongoing task, it should be stay same even
 when he closes the browser. He should be able to see where he left off. I am not able to manage this
 for now. And when all the list item in one particular date is being selected then, there
-should be functionality to hide or remove that from ongoing task and transfer to completed 
-task. 
+should be functionality to hide or remove that from ongoing task and transfer to completed
+task.
 I came this far from a simple concept and sketch in paper. Whoa!, what these few day has made me.
-Now I am more confident on learning, understanding the concept. I believe doing these kind of 
+Now I am more confident on learning, understanding the concept. I believe doing these kind of
 solo project is quite essential to make concept stick to memory.
 I am up for next challenge which is to create a working clone of mero share result checker.
 I am really excited for that . Let's go
 
 If  you think you can add other functionality, you can contact me, I also eager to learn from you.
-Thank you! 
+Thank you!
 -Bibek
 October 3,2021
 */
