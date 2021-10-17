@@ -259,6 +259,27 @@ function showResultBox() {
         li.innerHTML = "<label>" + item + "<input type='checkbox' onclick='countCheckbox(this)'></label>"
         resultBox.append(li);
     }
+
+//need to create a function that will show the completed task list on clicking list item in completed task section
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //making the submit button disabled until all the checkboxes are checked
     submitButton.disabled = true;
     submitButton.style.cssText="opacity: 0.4";
@@ -326,7 +347,14 @@ var closeResult = () => {
     window.location.reload();
     document.getElementById('resultBox').style.display = 'none';
 }
+var closeCompletedResultBox =()=>{
+    document.getElementById("completedResultBox").style.display = 'none';
+    
+};
 
+var completedTaskDeleter = ()=> {
+    
+};
 
 
 

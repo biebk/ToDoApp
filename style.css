@@ -114,7 +114,9 @@ body {
 #initialList #submitBtn,
 #initialList #closeBtn,
 #resultBox #submitButton,
-#resultBox #closeButton {
+#resultBox #closeButton,
+#completedResultBox #closeButtonCompleted,
+#completedResultBox #deletedtButtonCompleted{
     /* display: inline-block;
     margin-left: auto; */
     float: right;
@@ -175,7 +177,8 @@ body {
 /* Creating the style for initial list i.e that show while clicking on create button*/
 
 .container #initialList,
-.ongoingTask #resultBox{
+.ongoingTask #resultBox,
+#completedResultBox{
     width: 80%;
     height: 450px;
     border: 1px solid gold;
@@ -235,14 +238,17 @@ body {
     
  
 }
-#resultBox #submitButton {
+#resultBox #submitButton,
+
+#completedResultBox #deletedtButtonCompleted {
     position: absolute;
     bottom: 10px;
     right: 80px;
 
     
 }
-#resultBox #closeButton{
+#resultBox #closeButton,
+#completedResultBox #closeButtonCompleted{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -252,15 +258,24 @@ body {
 #initialList #submitBtn:hover,
 #initialList #closeBtn:hover,
 #resultBox #submitButton:hover,
-#resultBox #closeButton:hover {
+#resultBox #closeButton:hover,
+#completedResultBox #closeButtonCompleted:hover
+{
     background: rgba(0, 255, 255, 0.363);
 
+}
+#completedResultBox #deletedtButtonCompleted:hover {
+    color: red;
+    background: rgba(255, 0, 0, 0.308);
 }
 
 #initialList #submitBtn:active,
 #initialList #closeBtn:active,
 #resultBox #submitButton:active,
-#resultBox #closeButton:active {
+#resultBox #closeButton:active,
+#completedResultBox #closeButtonCompleted:active,
+#completedResultBox #deletedtButtonCompleted:active
+ {
     background: rgba(0, 255, 255, 0.534);
     color: red;
 
